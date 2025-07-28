@@ -1,7 +1,6 @@
 package com.interview.skeletons.controllers;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.interview.skeletons.auth.config.SecurityConfig;
 import com.interview.skeletons.config.ApiConfig;
 import com.interview.skeletons.dtos.items.ItemDTO;
 import com.interview.skeletons.dtos.safes.CreateSafeBoxDTO;
@@ -16,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -33,7 +31,6 @@ import static org.mockito.Mockito.when;
 
 @WebMvcTest
 @AutoConfigureMockMvc
-@Import(SecurityConfig.class)
 @ActiveProfiles("test")
 @WithMockUser(username = "testUser", password = "testWordPass1!", roles = "USER")
 public class SafeBoxControllerTest {
