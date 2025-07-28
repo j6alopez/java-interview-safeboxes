@@ -1,4 +1,23 @@
-# Unsafebox API Challenge
+# Solución Técnica - API Unsafebox
+
+El proyecto implementa las siguientes funcionalidades técnicas:
+
+| Tecnología       | Propósito                                                              |
+|------------------|-------------------------------------------------------------------------|
+| Spring Security  | Autenticación de usuarios mediante Basic Auth                          |
+| Spring Data JPA  | Persistencia de datos mediante ORM                                     |
+| Hazelcast        | Implementación de caché distribuida                                    |
+| Spring Boot      | Creación de la API RESTful                                             |
+| Jackson          | Serialización y deserialización de objetos JSON                        |
+| JUnit & Mockito  | Pruebas unitarias y de integración                                     |
+| OpenAPI          | Documentación interactiva de la API                                    |
+| Docker           | Contenerización y despliegue de la aplicación                          |
+| Gradle           | Herramienta de construcción y gestión de dependencias                  |
+
+⚠️ **Observación:** El único inconveniente está en la clase `SafeBoxControllerTest`. Se ha usado `@SpringBootTest` para cargar el contexto completo de la aplicación junto con `@AutoConfigureMockMvc`.  
+Lo correcto sería usar `@WebMvcTest` para cargar únicamente el contexto de la capa web. Sin embargo, por alguna razón, al usar `@WebMvcTest`, la inyección de dependencias ocurre pese a que el servicio está mockeado con `@MockBean`.
+
+## Enunciado del ejercicio
 
 Security-ish is a security company which main business is taking care of
 houses and people belongings.
