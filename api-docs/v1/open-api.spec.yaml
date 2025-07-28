@@ -1,0 +1,25 @@
+openapi: 3.0.0
+
+info:
+  description: |
+    SafeIsh API - The most (in) secure safebox
+  version: 0.0.1
+  title: Unsafebox API
+servers:
+  - url: localhost:8080/safe-box-mgmt-api/v1
+    description: local environment suitable for testing
+
+tags:
+  - name: SafeBoxes
+
+paths:
+  /safeboxes:
+    $ref: "resources/safeboxes.yml"
+  /safeboxes/{id}/items:
+    $ref: "resources/safeboxes-by-id.yml"
+
+components:
+  securitySchemes:
+    basicAuthentication:
+      type: http
+      scheme: basic

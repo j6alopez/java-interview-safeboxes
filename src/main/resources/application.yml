@@ -1,0 +1,28 @@
+server:
+  port: 8080
+application:
+  title: Java skeleton
+  version: 1.0.0
+
+spring:
+  datasource:
+    username: rv_user
+    password: rv_password
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://postgres-skeleton-db:5432/postgres_rv_database
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  hazelcast:
+    config: classpath:hazelcast.yaml
+  profiles:
+    default: test
+
+
+hibernate:
+  dialect: org.hibernate.dialect.PostgreSQL13Dialect
+
+logging:
+  level:
+    org.springframework: info

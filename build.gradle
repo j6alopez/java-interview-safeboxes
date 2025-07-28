@@ -1,0 +1,122 @@
+plugins {
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'jacoco'
+}
+
+group = 'com.tiendo.tech'
+version = '2.0.0'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+def mockitoAgent = configurations.create("mockitoAgent")
+
+dependencies {
+    //Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    //DataSources
+    runtimeOnly 'org.postgresql:postgresql'
+
+    //Testing
+    testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.3")
+    testImplementation("org.springframework.security:spring-security-test:6.5.2")
+    testImplementation 'com.h2database:h2:2.1.212'
+    testImplementation 'org.apache.commons:commons-lang3:3.18.0'
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+    testImplementation 'org.jeasy:easy-random-core:5.0.0'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
+/*
+************************ third-party libraries ********************************aaaa*****
+*/
+    implementation 'org.hibernate:hibernate-validator:8.0.2.Final'
+    implementation 'com.hazelcast:hazelcast:5.5.0'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+test {
+    jvmArgs.add("-javaagent:${mockitoAgent.asPath}")
+    testLogging {
+        events = ["PASSED", "SKIPPED", "FAILED"]
+    }
+    ignoreFailures = true
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.13"
+    reportsDirectory = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+/*
+************************************************************************************
+************************ Task to obtain a clear test report ************************
+************************************************************************************
+*/
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+tasks.withType(Test).configureEach {
+    testLogging {
+        events TestLogEvent.FAILED,
+                TestLogEvent.PASSED
+
+        exceptionFormat TestExceptionFormat.FULL
+        showExceptions true
+        showCauses true
+        showStackTraces true
+
+        debug {
+            events TestLogEvent.FAILED,
+                    TestLogEvent.PASSED
+
+            exceptionFormat TestExceptionFormat.FULL
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+
+        afterSuite { desc, result ->
+            if (!desc.parent) {
+                def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} passed, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped)"
+                def startItem = '|  ', endItem = '  |'
+                def repeatLength = startItem.length() + output.length() + endItem.length()
+                println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+            }
+        }
+    }
+}

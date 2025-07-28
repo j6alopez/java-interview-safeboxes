@@ -1,0 +1,9 @@
+type: object
+properties:
+  id:
+    description: Safebox id
+    type: string
+required:
+  - id
+example:
+  id: f626c808-648c-41fe-865d-c6062f3e0899

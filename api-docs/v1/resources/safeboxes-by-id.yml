@@ -1,0 +1,110 @@
+get:
+  summary: Retrieves the content of a safebox
+  description: |
+    Retrieves the currently stored contents in the safebox identified by the given ID
+  tags:
+    - SafeBoxes
+  security:
+    - basicAuthentication: [ ]
+  parameters:
+    - in: path
+      name: id
+      description: Safebox Id
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Safebox contents correctly retrieved
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                description: Safebox items
+                type: array
+                items:
+                  $ref: "../components/models/item.yml"
+            required:
+              - items
+            example:
+              items:
+                - id: 1
+                  description: "Item description1"
+                - id: 2
+                  description: "Item description2"
+    '401':
+      description: Specified Basic Auth does not match
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"
+    '404':
+      description: Requested safebox does not exist
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"
+    '500':
+      description: Unexpected API error
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"
+put:
+  summary: Add items to a Safebox
+  description: |
+    Inserts new contents in the safebox identified by the given ID and with the given Basic Auth
+  tags:
+    - SafeBoxes
+  security:
+    - basicAuthentication: [ ]
+  parameters:
+    - in: path
+      name: id
+      description: Safebox id
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            items:
+              description: Safebox items
+              type: array
+              items:
+                type: string
+          required:
+            - items
+          example:
+            items:
+              - Specify description for first item to add
+              - Specify description for second item to add
+              - pendrive
+              - ring
+  responses:
+    '204':
+      description: Content correctly added to the safebox
+    '401':
+      description: Specified Basic Auth does not match
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"
+    '404':
+      description: Requested safebox does not exist
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"
+    '500':
+      description: Unexpected API error
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"

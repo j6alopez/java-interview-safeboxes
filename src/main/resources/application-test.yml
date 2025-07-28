@@ -1,0 +1,9 @@
+credentials:
+  user: testUser
+  password: testWordPass1!
+  role: USER
+
+logging:
+  level:
+    org.springframework: DEBUG
+    org.springframework.security: DEBUG

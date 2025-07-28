@@ -1,0 +1,45 @@
+post:
+  summary: Creates a new safebox
+  description: |
+    Creates a new safebox based on a non-empty name and a password.
+  tags:
+    - SafeBoxes
+  security:
+    - basicAuthentication: [ ]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../components/models/safeboxes-create.yml"
+  responses:
+    '200':
+      description: Safebox correctly created
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/safebox-created.yml"
+    '401':
+      description: Specified Basic Auth does not match
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"
+    '409':
+      description: Safebox already exists
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"
+    '422':
+      description: Malformed expected data
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"
+    '500':
+      description: Unexpected API error
+      content:
+        application/json:
+          schema:
+            $ref: "../components/models/error.yml"

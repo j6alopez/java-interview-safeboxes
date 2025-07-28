@@ -1,0 +1,14 @@
+type: object
+required:
+  - name
+  - password
+properties:
+  name:
+    description: name of the safebox
+    type: string
+  password:
+    description: set password for the new safebox
+    type: string
+example:
+  name: Secure safebox
+  password: extr3melySecurePassword!
